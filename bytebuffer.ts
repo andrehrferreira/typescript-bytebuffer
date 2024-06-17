@@ -1,4 +1,4 @@
-import { GUID } from "./guid";
+import { GUID } from "@utils";
 
 export class ByteBuffer {
     private buffer: Uint8Array;
@@ -43,6 +43,37 @@ export class ByteBuffer {
             bytes[i] = binaryString.charCodeAt(i);
         
         return new ByteBuffer(bytes);
+    }
+
+    public static splitPackets(combinedBuffer: ByteBuffer): ByteBuffer[] {
+        const packets: ByteBuffer[] = [];
+        const bufferData = combinedBuffer.getBuffer();
+        let startPosition = 1;
+        const bufferSize = bufferData.length;
+    
+        for (let i = 1; i <= bufferSize - 4; i++) {
+            if (
+                bufferData[i] === 0xFE &&
+                bufferData[i + 1] === 0xFE &&
+                bufferData[i + 2] === 0xFE &&
+                bufferData[i + 3] === 0xFE
+            ) {
+                if (i > startPosition) {
+                    const packetData = bufferData.slice(startPosition, i);
+                    packets.push(new ByteBuffer(packetData));
+                }
+                
+                startPosition = i + 4;
+                i += 3;
+            }
+        }
+    
+        if (startPosition < bufferSize) {
+            const packetData = bufferData.slice(startPosition, bufferSize);
+            packets.push(new ByteBuffer(packetData));
+        }
+    
+        return packets;
     }
 
     public putInt32(value: number): ByteBuffer {
@@ -191,52 +222,60 @@ export class ByteBuffer {
     }
 
     public writeDataToBuffer(dataSequence: Map<string, string>, values: Map<string, any>): void {
-        dataSequence.forEach((type, key) => {
-            const value = values.get(key);
+        try{
+            dataSequence.forEach((type, key) => {
+                const value = values.get(key);
 
-            switch (type) {
-                case 'id': this.putId(value); break;
-                case 'int':
-                case 'int32': this.putInt32(value); break;
-                case 'float': this.putFloat(value); break;
-                case 'string': this.putString(value); break;
-                case 'byte': this.putByte(value); break;
-                case 'boolean':
-                case 'bool': this.putBool(value); break;
-                case 'vector': this.putVector(value); break;
-                case 'rotator': this.putRotator(value); break;
-                default:
-                    throw new Error(`Unsupported data type: ${type}`);
-            }
-        });
+                switch (type) {
+                    case 'id': this.putId(value); break;
+                    case 'int':
+                    case 'int32': this.putInt32(value); break;
+                    case 'float': this.putFloat(value); break;
+                    case 'string': this.putString(value); break;
+                    case 'byte': this.putByte(value); break;
+                    case 'boolean':
+                    case 'bool': this.putBool(value); break;
+                    case 'vector': this.putVector(value); break;
+                    case 'rotator': this.putRotator(value); break;
+                    default:
+                        throw new Error(`Unsupported data type: ${type}`);
+                }
+            });
+        }
+        catch{ }
     }
 
     public readDataFromBuffer(mapObjects: any): any {
-        const dataSequence : Map<string, string> = new Map(Object.entries(mapObjects));
-        const outValues: any = {};
+        try{
+            const dataSequence : Map<string, string> = new Map(Object.entries(mapObjects));
+            const outValues: any = {};
 
-        dataSequence.forEach((type, key) => {
-            let value: any;
+            dataSequence.forEach((type, key) => {
+                let value: any;
 
-            switch (type) {
-                case "id": value = this.getId(); break;
-                case 'int':
-                case 'int32': value = this.getInt32(); break;
-                case 'float': value = this.getFloat(); break;
-                case 'string': value = this.getString(); break;
-                case 'byte': value = this.getByte(); break;
-                case 'boolean':
-                case 'bool': value = this.getBool(); break;
-                case 'vector': value = this.getVector(); break;
-                case 'rotator': value = this.getRotator(); break;
-                default:
-                    throw new Error(`Unsupported data type: ${type}`);
-            }
+                switch (type) {
+                    case "id": value = this.getId(); break;
+                    case 'int':
+                    case 'int32': value = this.getInt32(); break;
+                    case 'float': value = this.getFloat(); break;
+                    case 'string': value = this.getString(); break;
+                    case 'byte': value = this.getByte(); break;
+                    case 'boolean':
+                    case 'bool': value = this.getBool(); break;
+                    case 'vector': value = this.getVector(); break;
+                    case 'rotator': value = this.getRotator(); break;
+                    default:
+                        throw new Error(`Unsupported data type: ${type}`);
+                }
 
-            outValues[key] = value;
-        });
+                outValues[key] = value;
+            });
 
-        return outValues;
+            return outValues;
+        }
+        catch{
+            return {};
+        }        
     }
 
     public getBuffer() {
