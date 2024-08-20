@@ -7,12 +7,5 @@ Test
 -------------
 
 ```bash
-$ cargo test
-```
-
-Build
--------------
-
-```bash
-$ cargo build --release
+$ npm test
 ```
