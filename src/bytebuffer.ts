@@ -1,9 +1,10 @@
-import { GUID } from "./guid";
 
 export class ByteBuffer {
     public buffer: Uint8Array;
 
     public position: number;
+
+    public next: ByteBuffer | null = null;
 
     constructor(data?: Uint8Array) {
         this.buffer = data || new Uint8Array();
@@ -74,6 +75,33 @@ export class ByteBuffer {
         }
     
         return packets;
+    }
+
+    public getBuffer() {
+        return this.buffer;
+    }
+
+    public toHex(): string {
+        let hexString = '';
+
+        for (let i = 0; i < this.buffer.length; i++) 
+            hexString += this.buffer[i].toString(16).padStart(2, '0');
+        
+        return hexString;
+    }
+
+    private toInt(Id: string) : number {
+        return parseInt(Id, 36);
+    }
+
+    private intToId(value: number) : string {
+        let stringID = value.toString(36).toUpperCase();        
+        return stringID;
+    }
+
+    public reset(): void {
+        this.position = 0;
+        this.buffer.fill(0);
     }
 
     public putInt32(value: number): ByteBuffer {
@@ -212,13 +240,13 @@ export class ByteBuffer {
     }
 
     public putId(id: string) : ByteBuffer {
-        this.putInt32(GUID.ToInt(id));
+        this.putInt32(this.toInt(id));
         return this;
     }
 
     public getId() : string {
         const idInt = this.getInt32();
-        return GUID.IntToId(idInt);
+        return this.intToId(idInt);
     }
 
     public writeDataToBuffer(dataSequence: Map<string, string>, values: Map<string, any>): void {
@@ -276,18 +304,5 @@ export class ByteBuffer {
         catch{
             return {};
         }        
-    }
-
-    public getBuffer() {
-        return this.buffer;
-    }
-
-    public toHex(): string {
-        let hexString = '';
-
-        for (let i = 0; i < this.buffer.length; i++) 
-            hexString += this.buffer[i].toString(16).padStart(2, '0');
-        
-        return hexString;
     }
 }

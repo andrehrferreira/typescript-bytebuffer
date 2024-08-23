@@ -1,4 +1,4 @@
-import { ByteBuffer } from '../src/bytebuffer';
+import { ByteBuffer } from '../src';
 
 describe('ByteBuffer', () => {
 

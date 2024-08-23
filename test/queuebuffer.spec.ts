@@ -1,5 +1,4 @@
-import { ByteBuffer } from "../src/bytebuffer";
-import { QueueBuffer } from "../src/queuebuffer";
+import { ByteBuffer, QueueBuffer } from '../src';
 
 describe("QueueBuffer", () => {
     beforeEach(() => {
