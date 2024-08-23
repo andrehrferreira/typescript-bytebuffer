@@ -28,8 +28,6 @@ import { ByteBuffer, ByteBufferPool, QueueBuffer } from 'typescript-bytebuffer';
 const buffer = new ByteBuffer();
 buffer.putInt32(1234).putString("Hello, ByteBuffer!");
 
-// Resetting and reading the data
-buffer.reset();
 const num = buffer.getInt32();
 const str = buffer.getString();
 
