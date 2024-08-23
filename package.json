@@ -1,5 +1,5 @@
 {
-    "name": "@tos/bytebuffer",
+    "name": "tos-bytebuffer",
     "version": "5.1.1",
     "description": "Tales Of Shadowland bytebuffer implementation",
     "author": "Andre Ferreira <andrehrf@gmail.com>",
