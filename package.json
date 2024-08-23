@@ -5,8 +5,25 @@
     "author": "Andre Ferreira <andrehrf@gmail.com>",
     "private": false,
     "license": "MIT",
+    "main": "./dist/index.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/andrehrferreira/typescript-bytebuffer.git"
+    },
+    "keywords": [
+        "bytebuffer",
+        "tos",
+        "queuebuffer",
+        "pool"
+    ],
+    "bugs": {
+        "url": "https://github.com/andrehrferreira/typescript-bytebuffer/issues"
+    },
+    "homepage": "https://github.com/andrehrferreira/typescript-bytebuffer#readme",
     "scripts": {
+        "prebuild": "rimraf dist",
         "test": "jest",
+        "build": "tsc",
         "benchmark": "ts-node benchmarks.ts",
         "server": "ts-node ./sample/server"
     },
@@ -15,13 +32,9 @@
         "@types/uuid": "^10.0.0",
         "@types/ws": "^8.5.12",
         "jest": "^29.7.0",
+        "rimraf": "^6.0.1",
         "ts-jest": "^29.2.4",
         "ts-node": "^10.9.2",
         "typescript": "^5.5.4"
-    },
-    "dependencies": {
-        "rxjs": "^7.8.1",
-        "uuid": "^10.0.0",
-        "ws": "^8.18.0"
     }
 }

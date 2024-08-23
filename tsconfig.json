@@ -3,7 +3,11 @@
         "target": "ES6",
         "module": "commonjs",
         "strict": true,
-        "esModuleInterop": true
-    }
+        "esModuleInterop": true,
+        "outDir": "dist",
+        "baseUrl": ".",
+    },
+    "include": ["packages/**/*", "src/**/*.ts",],
+    "exclude": ["node_modules", "dist", "**/*.spec.ts"]
 }
   
