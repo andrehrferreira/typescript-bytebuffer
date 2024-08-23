@@ -22,7 +22,7 @@ npm install @tos/bytebuffer
 Here is a basic example of how to use the API provided by the library for binary buffer manipulation:
 
 ```typescript
-import { ByteBuffer, ByteBufferPool, QueueBuffer } from 'typescript-bytebuffer';
+import { ByteBuffer, ByteBufferPool, QueueBuffer } from '@tos/bytebuffer';
 
 // Initializing a ByteBuffer
 const buffer = new ByteBuffer();
